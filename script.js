@@ -37,6 +37,7 @@ function login(){
                 alert("Login Successfull")
 
                 localStorage.setItem("currentUsername", accountDetails.name);
+                localStorage.setItem("currentAcno", accountDetails.acno);
                 
                 window.location = './home.html'
                     
@@ -110,7 +111,7 @@ function depositMny(){
         localStorage.setItem(acno, JSON.stringify(accountDetails));
 
         alert("Amount deposited Sucessfully")
-        document.getElementById("balance_amount").innerHTML = `<div class="mt-4 text-danger">Your current balance is ${accountDetails.balance}</div>`
+        document.getElementById("balance_amount").innerHTML = `<div class="mt-4 text-warning bg">Your current balance is ${accountDetails.balance}</div>`
     }
     }
     else{
@@ -140,17 +141,39 @@ function Withdraw(){
             localStorage.setItem(acno,JSON.stringify(accountDetails))
 
             alert('Current Balance after Withdrawal: ' +accountDetails.balance)
-            document.getElementById("withdrw_amount").innerHTML = `<div class="mt-4 text-danger">Your current balance is ${accountDetails.balance}</div>`
+            document.getElementById("withdrw_amount").innerHTML = `<div class="mt-4 text-warning">Your current balance is ${accountDetails.balance}</div>`
         }
     }else{
       alert('Incorrect account no')  
     }
 }
 
+function detailsShow(){
+    const currentAcno = localStorage.getItem("currentAcno");
+    accountDetails = JSON.parse(localStorage.getItem(currentAcno));
+    // console.log(accountDetails);
+    acntDet.innerHTML = `<div class="card" style="width: 18rem;">
+    <div class="card-header text-center">
+      Account Details:
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Account Holder : ${accountDetails.name}</li>
+      <li class="list-group-item">Account Number : ${accountDetails.acno}</li>
+      <li class="list-group-item">Current Balance: ${accountDetails.balance}</li>
+      <button onclick="detailsShow()" class="btn btn-primary">Refresh</button>
+    </ul>
+  </div>`
+
+
+
+
+}
+
 function logout(){
     let logOut = confirm("Are you sure you want to Logout?")
     if(logOut===true){
         localStorage.removeItem("currentUsername")
+        localStorage.removeItem("currentAcno")
         window.location = './index.html'
     }else{
         return;
